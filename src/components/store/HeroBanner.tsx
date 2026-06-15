@@ -17,8 +17,8 @@ const slides = [
   {
     id: 2,
     img: '/banner2.png',
-    title: 'Selecciones\nnacionales',
-    subtitle: 'Los Pumas · All Blacks · Springboks · Francia y más',
+    title: 'Selecciones\ny equipos europeos',
+    subtitle: 'Los Pumas · All Blacks · Springboks · Francia · Stade Toulousain y más',
     cta: 'Ver selecciones',
     href: '/selecciones',
   },
