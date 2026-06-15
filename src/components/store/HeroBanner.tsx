@@ -2,35 +2,33 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const slides = [
   {
     id: 1,
-    bg: 'bg-gradient-to-br from-gray-900 via-gray-800 to-primary-dark',
+    img: '/banner1.png',
     title: 'Camisetas oficiales\nde rugby',
     subtitle: 'La tienda más completa de Argentina',
     cta: 'Ver catálogo',
     href: '/selecciones',
-    accent: 'text-primary',
   },
   {
     id: 2,
-    bg: 'bg-gradient-to-br from-blue-900 via-gray-900 to-gray-800',
+    img: '/banner2.png',
     title: 'Selecciones\nnacionales',
     subtitle: 'Los Pumas · All Blacks · Springboks · Francia y más',
     cta: 'Ver selecciones',
     href: '/selecciones',
-    accent: 'text-blue-400',
   },
   {
     id: 3,
-    bg: 'bg-gradient-to-br from-primary-dark via-red-900 to-gray-900',
+    img: '/banner3.png',
     title: 'SALE\nhasta 30% OFF',
     subtitle: 'Modelos seleccionados con precio especial',
     cta: 'Ver ofertas',
     href: '/sale',
-    accent: 'text-yellow-400',
   },
 ]
 
@@ -58,46 +56,51 @@ export function HeroBanner() {
           i === current ? (
             <motion.div
               key={slide.id}
-              className={`absolute inset-0 ${slide.bg} flex items-center justify-center`}
+              className="absolute inset-0"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6 }}
             >
-              {/* Overlay pattern */}
-              <div className="absolute inset-0 opacity-10 bg-[url('/pattern-rugby.svg')] bg-repeat" />
+              <Image
+                src={slide.img}
+                alt={slide.title}
+                fill
+                className="object-cover"
+                priority={i === 0}
+                sizes="100vw"
+              />
+              <div className="absolute inset-0 bg-black/45" />
 
-              <div className="relative z-10 text-center text-white px-4 max-w-2xl">
-                <motion.h1
-                  className="text-4xl md:text-6xl font-black uppercase italic leading-tight whitespace-pre-line"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  {slide.title.split('\n').map((line, i) => (
-                    <span key={i}>
-                      {i === 0 ? <span className={slide.accent}>{line}</span> : ` ${line}`}
-                    </span>
-                  ))}
-                </motion.h1>
-                <motion.p
-                  className="mt-4 text-lg md:text-xl text-gray-200"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.35 }}
-                >
-                  {slide.subtitle}
-                </motion.p>
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  className="mt-6"
-                >
-                  <Link href={slide.href} className="btn-primary inline-block text-base px-8 py-3">
-                    {slide.cta}
-                  </Link>
-                </motion.div>
+              <div className="relative z-10 h-full flex items-center justify-center text-center text-white px-4">
+                <div className="max-w-2xl">
+                  <motion.h1
+                    className="text-4xl md:text-6xl font-black uppercase italic leading-tight whitespace-pre-line drop-shadow-lg"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    {slide.title}
+                  </motion.h1>
+                  <motion.p
+                    className="mt-4 text-lg md:text-xl text-gray-200 drop-shadow"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.35 }}
+                  >
+                    {slide.subtitle}
+                  </motion.p>
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="mt-6"
+                  >
+                    <Link href={slide.href} className="btn-primary inline-block text-base px-8 py-3">
+                      {slide.cta}
+                    </Link>
+                  </motion.div>
+                </div>
               </div>
             </motion.div>
           ) : null

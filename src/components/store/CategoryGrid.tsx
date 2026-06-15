@@ -1,11 +1,12 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const categories = [
-  { label: 'SELECCIONES', href: '/selecciones', color: 'from-blue-900 to-gray-900', emoji: '🌍' },
-  { label: 'CLUBES', href: '/clubes', color: 'from-purple-900 to-gray-900', emoji: '🏉' },
-  { label: 'EQUIPAMIENTO', href: '/equipamiento', color: 'from-green-900 to-gray-900', emoji: '⚙️' },
-  { label: 'SALE', href: '/sale', color: 'from-red-900 to-primary-dark', emoji: '🔥' },
-  { label: 'ENCARGOS', href: '/encargos', color: 'from-amber-900 to-gray-900', emoji: '📦' },
+  { label: 'SELECCIONES', href: '/selecciones', img: '/selecciones.jpg' },
+  { label: 'CLUBES', href: '/clubes', img: '/clubes.jpg' },
+  { label: 'EQUIPAMIENTO', href: '/equipamiento', img: '/equipamiento.png' },
+  { label: 'SALE', href: '/sale', img: '/descuentos.jpg' },
+  { label: 'ENCARGOS', href: '/encargos', img: '/encargos.png' },
 ]
 
 export function CategoryGrid() {
@@ -13,16 +14,22 @@ export function CategoryGrid() {
     <section className="max-w-7xl mx-auto px-4 py-10">
       <h2 className="section-title mb-6">CATEGORÍAS</h2>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        {categories.map(({ label, href, color, emoji }) => (
+        {categories.map(({ label, href, img }) => (
           <Link
             key={href}
             href={href}
-            className={`relative bg-gradient-to-br ${color} rounded-lg overflow-hidden aspect-square flex items-end p-4 group`}
+            className="relative rounded-lg overflow-hidden aspect-square flex items-end group"
           >
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-            <div className="relative z-10">
-              <div className="text-3xl mb-2">{emoji}</div>
-              <p className="text-white font-black text-sm uppercase tracking-wider">{label}</p>
+            <Image
+              src={img}
+              alt={label}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 768px) 50vw, 20vw"
+            />
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/55 transition-colors duration-300" />
+            <div className="relative z-10 p-4">
+              <p className="text-white font-black text-sm uppercase tracking-wider drop-shadow">{label}</p>
             </div>
           </Link>
         ))}
