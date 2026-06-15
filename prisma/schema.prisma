@@ -1,0 +1,247 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  SUPERADMIN
+}
+
+model Product {
+  id          String           @id @default(cuid())
+  name        String
+  slug        String           @unique
+  description String?
+  details     String?
+  returns     String?
+  sizeChart   String?
+  brand       String
+  category    Category
+  images      String[]
+  tag         Tag              @default(NONE)
+  active      Boolean          @default(true)
+  featured    Boolean          @default(false)
+  variants    ProductVariant[]
+  orderItems  OrderItem[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  deletedAt   DateTime?
+
+  @@index([category])
+  @@index([active])
+}
+
+enum Category {
+  SELECCIONES
+  CLUBES
+  EQUIPAMIENTO
+}
+
+enum Tag {
+  NONE
+  NEW
+  SALE
+  FEATURED
+}
+
+model ProductVariant {
+  id         String      @id @default(cuid())
+  product    Product     @relation(fields: [productId], references: [id])
+  productId  String
+  size       String
+  color      String?
+  price      Int
+  oldPrice   Int?
+  stock      Int         @default(0)
+  sku        String?     @unique
+  orderItems OrderItem[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([productId])
+}
+
+model Order {
+  id              String        @id @default(cuid())
+  orderNumber     String        @unique
+  dni             String
+  firstName       String
+  lastName        String
+  email           String
+  phone           String
+  street          String
+  city            String
+  province        String
+  zipCode         String
+  country         String        @default("Argentina")
+  notes           String?
+  items           OrderItem[]
+  subtotal        Int
+  shippingCost    Int           @default(0)
+  discountAmount  Int           @default(0)
+  couponCode      String?
+  total           Int
+  paymentMethod   PaymentMethod
+  paymentStatus   PaymentStatus @default(PENDING)
+  mpPaymentId     String?
+  mpPreferenceId  String?
+  transferProof   String?
+  status          OrderStatus   @default(PENDING)
+  shippingCompany String?
+  trackingCode    String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+enum PaymentMethod {
+  MERCADOPAGO
+  TRANSFER
+  CASH
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model OrderItem {
+  id          String         @id @default(cuid())
+  order       Order          @relation(fields: [orderId], references: [id])
+  orderId     String
+  product     Product        @relation(fields: [productId], references: [id])
+  productId   String
+  variant     ProductVariant @relation(fields: [variantId], references: [id])
+  variantId   String
+  quantity    Int
+  unitPrice   Int
+  size        String
+  productName String
+  createdAt   DateTime       @default(now())
+
+  @@index([orderId])
+}
+
+model Coupon {
+  id        String    @id @default(cuid())
+  code      String    @unique
+  type      String
+  value     Int
+  minAmount Int?
+  maxUses   Int?
+  usedCount Int       @default(0)
+  active    Boolean   @default(true)
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model SiteConfig {
+  id                   String   @id @default("main")
+  bannerText           String   @default("3 cuotas sin interés · 10% OFF con transferencia")
+  heroTitle            String   @default("Camisetas oficiales de rugby")
+  heroSubtitle         String   @default("Selecciones · Clubes · Equipamiento")
+  heroCtaText          String   @default("Ver catálogo")
+  freeShippingFrom     Int      @default(150000)
+  transferDiscount     Int      @default(10)
+  installments         Int      @default(3)
+  primaryColor         String   @default("#B91C1C")
+  instagram            String   @default("@kickoff.tienda")
+  tiktok               String   @default("")
+  email                String   @default("kickoff@tienda.com")
+  whatsapp             String   @default("")
+  cbu                  String   @default("")
+  alias                String   @default("")
+  bankHolder           String   @default("")
+  statClients          String   @default("+2K")
+  statModels           String   @default("+500")
+  statSelecciones      String   @default("20+")
+  statYears            String   @default("3")
+  shippingDeadlineText String   @default("Comprá hoy y despachamos mañana a primera hora")
+  encargoWindowOpen    Boolean  @default(true)
+  encargoWindow1Start  Int      @default(1)
+  encargoWindow1End    Int      @default(15)
+  encargoWindow2Start  Int      @default(16)
+  encargoWindow2End    Int      @default(31)
+  encargoWhatsapp      String   @default("")
+  encargoDeliveryTime  String   @default("15 a 30 días hábiles")
+  encargoLegalText     String   @default("Los encargos no tienen stock asegurado hasta confirmar con el equipo de KickOff. El tiempo de entrega estimado es de 15 a 30 días hábiles. El precio puede variar según el tipo de cambio al momento de confirmar.")
+  updatedAt            DateTime @updatedAt
+}
+
+model EncargoProduct {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  brand       String
+  description String?
+  images      String[]
+  season      String?
+  origin      String?
+  nation      String?
+  league      String?
+  active      Boolean   @default(true)
+  encargos    Encargo[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Encargo {
+  id          String         @id @default(cuid())
+  product     EncargoProduct @relation(fields: [productId], references: [id])
+  productId   String
+  productName String
+  brand       String
+  size        String
+  name        String
+  phone       String
+  email       String?
+  notes       String?
+  status      EncargoStatus  @default(PENDING)
+  ventana     String
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum EncargoStatus {
+  PENDING
+  CONTACTED
+  CONFIRMED
+  ORDERED
+  ARRIVED
+  DELIVERED
+  CANCELLED
+}
+
+model WaitlistEmail {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
