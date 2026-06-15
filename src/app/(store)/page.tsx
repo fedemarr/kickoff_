@@ -7,7 +7,7 @@ import { StatsBar } from '@/components/store/StatsBar'
 import { BrandsCarousel } from '@/components/store/BrandsCarousel'
 import { TestimonialsSlider } from '@/components/store/TestimonialsSlider'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 async function getHomeProducts() {
   try {
