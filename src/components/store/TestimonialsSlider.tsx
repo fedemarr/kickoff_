@@ -31,7 +31,7 @@ export function TestimonialsSlider() {
                     <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <p className="text-gray-700 italic leading-relaxed">"{testimonials[current].text}"</p>
+                <p className="text-gray-700 italic leading-relaxed">&ldquo;{testimonials[current].text}&rdquo;</p>
                 <p className="font-bold text-gray-900 mt-4">— {testimonials[current].name}</p>
               </div>
 
