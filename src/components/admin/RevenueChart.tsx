@@ -25,7 +25,7 @@ export function RevenueChart({ data }: Props) {
         <XAxis dataKey="mes" tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
         <YAxis tickFormatter={formatARS} tick={{ fontSize: 11, fill: '#9ca3af' }} axisLine={false} tickLine={false} width={55} />
         <Tooltip
-          formatter={(v: number) => [`$${v.toLocaleString('es-AR')}`, 'Ventas']}
+          formatter={(v) => [`$${Number(v).toLocaleString('es-AR')}`, 'Ventas']}
           contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }}
         />
         <Area type="monotone" dataKey="ventas" stroke="#B91C1C" strokeWidth={2} fill="url(#colorVentas)" dot={{ r: 3, fill: '#B91C1C' }} />
