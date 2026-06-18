@@ -10,12 +10,12 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#B91C1C',
-          dark: '#991B1B',
-          hover: '#7F1D1D',
+          DEFAULT: '#1E9916',
+          dark: '#177711',
+          hover: '#10590B',
         },
         'black-card': '#1a1a1a',
-        'green-cuotas': '#1D9E75',
+        'green-cuotas': '#1E9916',
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'Inter', 'sans-serif'],

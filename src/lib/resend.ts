@@ -11,7 +11,7 @@ export async function sendOrderConfirmation(order: Order & { items: Array<{ prod
     subject: `Tu pedido #${order.orderNumber} fue recibido — KickOff`,
     html: `
       <div style="font-family: Inter, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="background: #B91C1C; padding: 24px; text-align: center;">
+        <div style="background: #1E9916; padding: 24px; text-align: center;">
           <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 900;">KICKOFF</h1>
         </div>
         <div style="padding: 32px;">
@@ -28,12 +28,12 @@ export async function sendOrderConfirmation(order: Order & { items: Array<{ prod
             `).join('')}
             <div style="display: flex; justify-content: space-between; padding: 12px 0; font-weight: 700; font-size: 18px;">
               <span>Total</span>
-              <span style="color: #B91C1C;">$${order.total.toLocaleString('es-AR')}</span>
+              <span style="color: #1E9916;">$${order.total.toLocaleString('es-AR')}</span>
             </div>
           </div>
 
           <p style="color: #4b5563;">Te contactaremos pronto para coordinar el envío.</p>
-          <p style="color: #4b5563;">Cualquier consulta escribinos a <a href="mailto:kickoff@tienda.com" style="color: #B91C1C;">kickoff@tienda.com</a></p>
+          <p style="color: #4b5563;">Cualquier consulta escribinos a <a href="mailto:kickoff@tienda.com" style="color: #1E9916;">kickoff@tienda.com</a></p>
         </div>
         <div style="background: #111; padding: 16px; text-align: center;">
           <p style="color: #9ca3af; margin: 0; font-size: 12px;">© 2025 KickOff. Todos los derechos reservados.</p>
@@ -50,12 +50,12 @@ export async function sendTransferDetails(order: Order, bankDetails: { cbu: stri
     subject: `Datos para completar tu pago — Pedido #${order.orderNumber}`,
     html: `
       <div style="font-family: Inter, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="background: #B91C1C; padding: 24px; text-align: center;">
+        <div style="background: #1E9916; padding: 24px; text-align: center;">
           <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 900;">KICKOFF</h1>
         </div>
         <div style="padding: 32px;">
           <h2 style="color: #111;">Datos para tu transferencia</h2>
-          <p>Para completar tu pedido <strong>#${order.orderNumber}</strong>, realizá la transferencia por <strong style="color: #B91C1C;">$${order.total.toLocaleString('es-AR')}</strong> a:</p>
+          <p>Para completar tu pedido <strong>#${order.orderNumber}</strong>, realizá la transferencia por <strong style="color: #1E9916;">$${order.total.toLocaleString('es-AR')}</strong> a:</p>
 
           <div style="background: #f9fafb; border-radius: 8px; padding: 24px; margin: 24px 0;">
             <div style="margin-bottom: 12px;"><strong>CBU:</strong> ${bankDetails.cbu}</div>
@@ -64,7 +64,7 @@ export async function sendTransferDetails(order: Order, bankDetails: { cbu: stri
             <div><strong>Referencia:</strong> Pedido #${order.orderNumber}</div>
           </div>
 
-          <p style="color: #4b5563; font-size: 14px;">Una vez realizada la transferencia, envianos el comprobante a <a href="mailto:kickoff@tienda.com" style="color: #B91C1C;">kickoff@tienda.com</a> o por WhatsApp para confirmar tu pedido.</p>
+          <p style="color: #4b5563; font-size: 14px;">Una vez realizada la transferencia, envianos el comprobante a <a href="mailto:kickoff@tienda.com" style="color: #1E9916;">kickoff@tienda.com</a> o por WhatsApp para confirmar tu pedido.</p>
         </div>
       </div>
     `,
@@ -78,7 +78,7 @@ export async function sendShippingNotification(order: Order) {
     subject: `Tu pedido #${order.orderNumber} fue enviado — KickOff`,
     html: `
       <div style="font-family: Inter, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="background: #B91C1C; padding: 24px; text-align: center;">
+        <div style="background: #1E9916; padding: 24px; text-align: center;">
           <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 900;">KICKOFF</h1>
         </div>
         <div style="padding: 32px;">
