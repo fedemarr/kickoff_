@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { ShoppingCart, Search, Menu, X, ChevronDown } from 'lucide-react'
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
 import { useCartStore } from '@/stores/cartStore'
 import { getVentanaEncargo } from '@/lib/encargos'
 
@@ -38,8 +39,15 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center h-[60px] gap-4">
           {/* Logo */}
-          <Link href="/" className="text-white font-black text-2xl tracking-tight mr-4 shrink-0">
-            KICK<span className="text-primary">OFF</span>
+          <Link href="/" className="shrink-0 mr-4">
+            <Image
+              src="/logo.jpg"
+              alt="KickOff Rugby"
+              width={48}
+              height={48}
+              className="rounded-full object-cover"
+              priority
+            />
           </Link>
 
           {/* Desktop nav */}
