@@ -57,6 +57,7 @@ enum Tag {
   NEW
   SALE
   FEATURED
+  PREVENTA
 }
 
 model ProductVariant {

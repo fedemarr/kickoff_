@@ -89,12 +89,19 @@ export function Navbar() {
 
             <Link href="/encargos" className="flex items-center gap-1.5 hover:text-white transition-colors">
               ENCARGOS
-              <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${ventana.isOpen ? 'bg-green-500 text-white animate-pulse' : 'bg-gray-600 text-gray-300'}`}>
+              <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${ventana.isOpen ? 'bg-primary text-white animate-pulse' : 'bg-gray-600 text-gray-300'}`}>
                 {ventana.isOpen ? 'ABIERTO' : 'CERRADO'}
               </span>
             </Link>
 
-            <Link href="/ayuda" className="hover:text-white transition-colors">AYUDA</Link>
+            <Link href="/preventa" className={`flex items-center gap-1.5 hover:text-white transition-colors ${pathname === '/preventa' ? 'text-white' : ''}`}>
+              PRE VENTA
+              <span className="text-[9px] px-1.5 py-0.5 rounded-full font-bold bg-primary text-white">
+                NUEVO
+              </span>
+            </Link>
+
+            <Link href="/contacto" className={`hover:text-white transition-colors ${pathname === '/contacto' ? 'text-white' : ''}`}>CONTACTO</Link>
           </nav>
 
           {/* Search */}
@@ -147,7 +154,10 @@ export function Navbar() {
                 <Link href="/encargos" onClick={() => setMobileOpen(false)} className="block text-gray-300 hover:text-white py-2 text-sm font-semibold">
                   ENCARGOS {ventana.isOpen ? '🟢' : '🔴'}
                 </Link>
-                <Link href="/ayuda" onClick={() => setMobileOpen(false)} className="block text-gray-300 hover:text-white py-2 text-sm font-semibold">AYUDA</Link>
+                <Link href="/preventa" onClick={() => setMobileOpen(false)} className="block text-gray-300 hover:text-white py-2 text-sm font-semibold">
+                  PRE VENTA 🏷️
+                </Link>
+                <Link href="/contacto" onClick={() => setMobileOpen(false)} className="block text-gray-300 hover:text-white py-2 text-sm font-semibold">CONTACTO</Link>
                 <div className="pt-2">
                   <div className="relative">
                     <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
