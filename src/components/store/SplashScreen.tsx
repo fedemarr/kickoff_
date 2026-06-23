@@ -38,7 +38,7 @@ export function SplashScreen() {
             transition={{ duration: 1.2 }}
           />
 
-          {/* Logo + tagline + barra */}
+          {/* Contenido centrado */}
           <div className="relative z-10 flex flex-col items-center gap-6">
             {/* Logo */}
             <motion.div
@@ -67,23 +67,30 @@ export function SplashScreen() {
               Camisetas de Rugby
             </motion.span>
 
-            {/* Barra de carga */}
-            <motion.div
-              className="w-40 h-[3px] bg-white/10 rounded-full overflow-hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
+            {/* Botón entrar */}
+            <motion.button
+              onClick={dismiss}
+              className="mt-2 px-10 py-3 bg-primary hover:bg-primary-dark text-white font-bold tracking-widest uppercase rounded-full text-sm transition-colors shadow-lg shadow-primary/30"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.1, duration: 0.5 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
             >
-              <motion.div
-                className="h-full rounded-full"
-                style={{ background: '#1E9916' }}
-                initial={{ width: '0%' }}
-                animate={{ width: '100%' }}
-                transition={{ delay: 1.1, duration: 2.2, ease: 'easeInOut' }}
-                onAnimationComplete={dismiss}
-              />
-            </motion.div>
+              Entrar a la tienda
+            </motion.button>
           </div>
+
+          {/* Saltar (esquina) */}
+          <motion.button
+            onClick={dismiss}
+            className="absolute bottom-8 right-6 text-white/30 hover:text-white/70 text-xs tracking-widest uppercase transition-colors"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.4 }}
+          >
+            Saltar →
+          </motion.button>
         </motion.div>
       )}
     </AnimatePresence>
