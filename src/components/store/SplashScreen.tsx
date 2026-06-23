@@ -28,36 +28,45 @@ export function SplashScreen() {
   if (!show) return null
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: '#000' }}>
+    <div className="fixed inset-0 z-[9999] bg-black">
       <video
         ref={videoRef}
         autoPlay
         muted
         playsInline
         onEnded={dismiss}
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+        className="absolute inset-0 w-full h-full object-cover"
       >
         <source src={VIDEO_URL} type="video/mp4" />
       </video>
 
-      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)' }} />
+      <div className="absolute inset-0 bg-black/45" />
 
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, zIndex: 10 }}>
-        <Image src="/logo.jpg" alt="KickOff" width={180} height={180} style={{ borderRadius: '50%' }} priority />
-        <span style={{ color: '#fff', fontSize: 18, fontWeight: 700, fontStyle: 'italic', letterSpacing: 1, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+      {/* Contenido centrado — responsivo */}
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 gap-5">
+        <Image
+          src="/logo.jpg"
+          alt="KickOff"
+          width={160}
+          height={160}
+          className="rounded-full w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 object-cover"
+          priority
+        />
+        <span className="text-white text-base sm:text-lg md:text-xl font-bold italic tracking-wide drop-shadow-lg text-center">
           El rugby en tu piel
         </span>
         <button
           onClick={dismiss}
-          style={{ marginTop: 8, padding: '12px 36px', background: '#1e9916', color: '#fff', fontWeight: 700, fontSize: 14, letterSpacing: 3, textTransform: 'uppercase', borderRadius: 999, border: 'none', cursor: 'pointer' }}
+          className="mt-1 w-full max-w-xs sm:w-auto px-10 py-4 sm:py-3 bg-primary text-white font-bold text-sm tracking-widest uppercase rounded-full border-none cursor-pointer active:scale-95 transition-transform"
         >
           Entrar a la tienda
         </button>
       </div>
 
+      {/* Saltar — área táctil grande en mobile */}
       <button
         onClick={dismiss}
-        style={{ position: 'absolute', bottom: 32, right: 24, color: 'rgba(255,255,255,0.5)', fontSize: 12, letterSpacing: 4, textTransform: 'uppercase', zIndex: 10, background: 'none', border: 'none', cursor: 'pointer' }}
+        className="absolute bottom-8 right-5 z-10 text-white/50 text-xs tracking-widest uppercase py-3 px-4"
       >
         Saltar →
       </button>
