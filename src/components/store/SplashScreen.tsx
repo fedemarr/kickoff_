@@ -58,14 +58,19 @@ export function SplashScreen() {
             </motion.div>
 
             {/* Tagline */}
-            <motion.span
-              className="text-white/40 text-[11px] tracking-[0.45em] uppercase font-light"
+            <motion.div
+              className="flex flex-col items-center gap-1"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.5 }}
             >
-              Camisetas de Rugby
-            </motion.span>
+              <span className="text-white text-lg font-bold tracking-wide italic">
+                El rugby en tu piel
+              </span>
+              <span className="text-white/35 text-[10px] tracking-[0.4em] uppercase font-light">
+                Camisetas de Rugby
+              </span>
+            </motion.div>
 
             {/* Botón entrar */}
             <motion.button
