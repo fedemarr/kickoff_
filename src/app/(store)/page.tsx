@@ -3,6 +3,7 @@ import { HeroBanner } from '@/components/store/HeroBanner'
 import { BenefitsBar } from '@/components/store/BenefitsBar'
 import { CategoryGrid } from '@/components/store/CategoryGrid'
 import { ProductCarousel } from '@/components/store/ProductCarousel'
+import { EncargoCarousel } from '@/components/store/EncargoCarousel'
 import { StatsBar } from '@/components/store/StatsBar'
 import { BrandsCarousel } from '@/components/store/BrandsCarousel'
 import { TestimonialsSlider } from '@/components/store/TestimonialsSlider'
@@ -11,7 +12,7 @@ export const dynamic = 'force-dynamic'
 
 async function getHomeProducts() {
   try {
-    const [bestSellers, newArrivals, saleProducts] = await Promise.all([
+    const [bestSellers, newArrivals, encargoProducts] = await Promise.all([
       prisma.product.findMany({
         where: { active: true, featured: true },
         include: { variants: true },
@@ -24,16 +25,15 @@ async function getHomeProducts() {
         take: 8,
         orderBy: { createdAt: 'desc' },
       }),
-      prisma.product.findMany({
-        where: { active: true, tag: 'SALE' },
-        include: { variants: true },
-        take: 8,
+      prisma.encargoProduct.findMany({
+        where: { active: true },
+        take: 12,
         orderBy: { createdAt: 'desc' },
       }),
     ])
-    return { bestSellers, newArrivals, saleProducts }
+    return { bestSellers, newArrivals, encargoProducts }
   } catch {
-    return { bestSellers: [], newArrivals: [], saleProducts: [] }
+    return { bestSellers: [], newArrivals: [], encargoProducts: [] }
   }
 }
 
@@ -46,7 +46,7 @@ async function getSiteConfig() {
 }
 
 export default async function HomePage() {
-  const [{ bestSellers, newArrivals, saleProducts }, config] = await Promise.all([
+  const [{ bestSellers, newArrivals, encargoProducts }, config] = await Promise.all([
     getHomeProducts(),
     getSiteConfig(),
   ])
@@ -82,14 +82,7 @@ export default async function HomePage() {
         badgeColor="bg-gray-800"
       />
 
-      {saleProducts.length > 0 && (
-        <ProductCarousel
-          title="SALE"
-          products={saleProducts as any}
-          viewMoreHref="/sale"
-          badgeColor="bg-yellow-500"
-        />
-      )}
+      <EncargoCarousel products={encargoProducts as any} />
 
       <BrandsCarousel />
       <TestimonialsSlider />
