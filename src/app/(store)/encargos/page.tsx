@@ -4,7 +4,7 @@ import { EncargosClient } from '@/components/encargos/EncargosClient'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'Encargos — Pedidos especiales' }
-export const revalidate = 300
+export const dynamic = 'force-dynamic'
 
 export default async function EncargosPage() {
   let products: any[] = []
