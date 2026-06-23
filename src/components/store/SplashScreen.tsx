@@ -47,6 +47,12 @@ export function SplashScreen() {
         <span style={{ color: '#fff', fontSize: 18, fontWeight: 700, fontStyle: 'italic', letterSpacing: 1, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
           El rugby en tu piel
         </span>
+        <button
+          onClick={dismiss}
+          style={{ marginTop: 8, padding: '12px 36px', background: '#1e9916', color: '#fff', fontWeight: 700, fontSize: 14, letterSpacing: 3, textTransform: 'uppercase', borderRadius: 999, border: 'none', cursor: 'pointer' }}
+        >
+          Entrar a la tienda
+        </button>
       </div>
 
       <button
