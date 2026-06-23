@@ -4,6 +4,7 @@ import Image from 'next/image'
 
 const brands = [
   { name: 'Nike',           src: '/brands/nike.png' },
+  { name: 'Adidas',         src: '/brands/adidas.jpg' },
   { name: 'Canterbury',     src: '/brands/canterbury.jpg' },
   { name: 'Gilbert',        src: '/brands/gilbert.png' },
   { name: 'Macron',         src: '/brands/macron.png' },
