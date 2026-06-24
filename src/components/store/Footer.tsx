@@ -60,8 +60,8 @@ export function Footer() {
               <a href="https://instagram.com/kickoff.tienda" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
                 <InstagramIcon /> @kickoff.tienda
               </a>
-              <a href="https://wa.me/5491100000000" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
-                <WhatsAppIcon /> WhatsApp
+              <a href="https://wa.me/5491156192976" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
+                <WhatsAppIcon /> +54 9 11 5619-2976
               </a>
               <a href="mailto:kickoff@tienda.com" className="flex items-center gap-2 hover:text-white transition-colors">
                 <Mail size={16} /> kickoff@tienda.com
