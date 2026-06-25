@@ -1,6 +1,9 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy init — no instanciar en build time
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY)
+}
 
 const FROM = 'KickOff <onboarding@resend.dev>'
 const OWNER_EMAIL = 'tiendakickoff@gmail.com'
@@ -86,7 +89,7 @@ export async function sendOrderConfirmationEmail(order: OrderEmailData) {
     ? `<span style="background:#fcd34d;color:#92400e;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:bold">Transferencia bancaria</span>`
     : `<span style="background:#e5e7eb;color:#374151;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:bold">Efectivo</span>`
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to: order.email,
     subject: `¡Pedido confirmado! #${order.orderNumber} — KickOff`,
@@ -159,7 +162,7 @@ export async function sendNewOrderNotification(order: OrderEmailData) {
     : order.paymentMethod === 'TRANSFER' ? 'Transferencia bancaria (pendiente)'
     : 'Efectivo'
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to: OWNER_EMAIL,
     subject: `🛒 Nuevo pedido #${order.orderNumber} — ${formatPrice(order.total)}`,
