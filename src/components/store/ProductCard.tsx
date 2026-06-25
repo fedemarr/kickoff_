@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import { formatPrice } from '@/lib/utils'
+import { formatPrice, discountedPrice } from '@/lib/utils'
 import type { Product } from '@/types'
 
 interface ProductCardProps {
@@ -72,6 +72,9 @@ export function ProductCard({ product, showEncargar = false, onEncargar }: Produ
             </div>
             <p className="text-xs text-green-cuotas mt-0.5">
               3 cuotas de {formatPrice(Math.round(firstVariant.price / 3))}
+            </p>
+            <p className="text-xs text-green-600 font-semibold mt-0.5">
+              {formatPrice(discountedPrice(firstVariant.price, 23))} por transferencia
             </p>
           </div>
         )}
