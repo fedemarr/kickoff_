@@ -57,16 +57,16 @@ export function TestimonialsSlider() {
 
           {/* CTA Block */}
           <div className="bg-[#111] rounded-xl p-8 text-white">
-            <p className="text-xs uppercase tracking-widest text-gray-400 mb-3">Garantía KickOff</p>
+            <p className="text-xs uppercase tracking-widest text-gray-400 mb-3">KickOff Store</p>
             <h3 className="text-2xl font-black uppercase italic mb-4">
-              CAMISETAS<br />
-              <span className="text-primary">100% ORIGINALES</span>
+              REMERAS<br />
+              <span className="text-primary">IMPORTADAS</span>
             </h3>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              Trabajamos únicamente con productos oficiales y licenciados. Cada camiseta viene con sus etiquetas originales y garantía de autenticidad.
+              Trabajamos con remeras importadas de las mejores marcas del mundo, aptas para todo tipo de entrenamiento y uso diario. Cada prenda está seleccionada por su calidad de tela, durabilidad y diseño — para que te veas y te sientas como un jugador de élite dentro y fuera de la cancha.
             </p>
             <Link href="/selecciones" className="btn-primary inline-block text-sm">
-              ÚLTIMOS LANZAMIENTOS →
+              VER CATÁLOGO →
             </Link>
           </div>
         </div>
