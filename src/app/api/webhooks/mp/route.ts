@@ -3,9 +3,11 @@ import { prisma } from '@/lib/db'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
 import { sendOrderConfirmationEmail, sendNewOrderNotification } from '@/lib/email'
 
-const client = new MercadoPagoConfig({
-  accessToken: process.env.MP_ACCESS_TOKEN || '',
-})
+function getMPClient() {
+  return new MercadoPagoConfig({
+    accessToken: (process.env.MP_ACCESS_TOKEN || '').replace(/^﻿/, ''),
+  })
+}
 
 export async function POST(request: Request) {
   try {
@@ -18,7 +20,7 @@ export async function POST(request: Request) {
     const paymentId = body.data?.id
     if (!paymentId) return NextResponse.json({ error: 'No payment id' }, { status: 400 })
 
-    const payment = new Payment(client)
+    const payment = new Payment(getMPClient())
     const paymentData = await payment.get({ id: paymentId })
 
     const orderId = paymentData.external_reference

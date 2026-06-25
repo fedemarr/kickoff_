@@ -1,9 +1,11 @@
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 import type { CartItem } from '@/types'
 
-const client = new MercadoPagoConfig({
-  accessToken: process.env.MP_ACCESS_TOKEN || '',
-})
+function getMPClient() {
+  return new MercadoPagoConfig({
+    accessToken: (process.env.MP_ACCESS_TOKEN || '').replace(/^﻿/, ''),
+  })
+}
 
 interface CreatePreferenceParams {
   orderId: string
@@ -27,7 +29,7 @@ export async function createPreference({
   payer,
   installments,
 }: CreatePreferenceParams) {
-  const preference = new Preference(client)
+  const preference = new Preference(getMPClient())
 
   const result = await preference.create({
     body: {
