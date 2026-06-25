@@ -6,6 +6,7 @@ const VIDEO_URL = '/intro.mp4'
 
 export function SplashScreen() {
   const [show, setShow] = useState(false)
+  const [videoBlocked, setVideoBlocked] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export function SplashScreen() {
     if (!show) return
     const v = videoRef.current
     if (!v) return
-    v.play().catch(() => {})
+    v.play().catch(() => setVideoBlocked(true))
   }, [show])
 
   const dismiss = () => {
@@ -25,15 +26,25 @@ export function SplashScreen() {
     sessionStorage.setItem('ko_splash', '1')
   }
 
+  const handleTap = () => {
+    const v = videoRef.current
+    if (!v) return
+    if (v.paused) {
+      v.play().catch(() => {})
+      setVideoBlocked(false)
+    }
+  }
+
   if (!show) return null
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-black">
+    <div className="fixed inset-0 z-[9999] bg-black" onClick={handleTap}>
       <video
         ref={videoRef}
         autoPlay
         muted
         playsInline
+        preload="auto"
         onEnded={dismiss}
         className="absolute inset-0 w-full h-full object-cover"
       >
@@ -42,7 +53,6 @@ export function SplashScreen() {
 
       <div className="absolute inset-0 bg-black/45" />
 
-      {/* Contenido centrado — responsivo */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 gap-5">
         <Image
           src="/logo.jpg"
@@ -55,17 +65,23 @@ export function SplashScreen() {
         <span className="text-white text-base sm:text-lg md:text-xl font-bold italic tracking-wide drop-shadow-lg text-center">
           El rugby en tu piel
         </span>
+
+        {videoBlocked && (
+          <p className="text-white/70 text-sm animate-pulse">
+            Tocá para reproducir el video
+          </p>
+        )}
+
         <button
-          onClick={dismiss}
+          onClick={(e) => { e.stopPropagation(); dismiss() }}
           className="mt-1 w-full max-w-xs sm:w-auto px-10 py-4 sm:py-3 bg-primary text-white font-bold text-sm tracking-widest uppercase rounded-full border-none cursor-pointer active:scale-95 transition-transform"
         >
           Entrar a la tienda
         </button>
       </div>
 
-      {/* Saltar — área táctil grande en mobile */}
       <button
-        onClick={dismiss}
+        onClick={(e) => { e.stopPropagation(); dismiss() }}
         className="absolute bottom-8 right-5 z-10 text-white/50 text-xs tracking-widest uppercase py-3 px-4"
       >
         Saltar →
