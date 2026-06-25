@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const FROM = 'KickOff <onboarding@resend.dev>'
-const OWNER_EMAIL = 'fedenez11@gmail.com'
+const OWNER_EMAIL = 'tiendakickoff@gmail.com'
 const WA_NUMBER = '5491156192976'
 
 interface OrderItem {
