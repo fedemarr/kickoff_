@@ -19,9 +19,14 @@ export async function GET(_: Request, { params }: Context) {
 export async function PUT(request: Request, { params }: Context) {
   try {
     const body = await request.json()
+    const data: any = {}
+    if (body.status) data.status = body.status
+    if (body.paymentStatus) data.paymentStatus = body.paymentStatus
+    if (body.shippingCompany !== undefined) data.shippingCompany = body.shippingCompany
+    if (body.trackingCode !== undefined) data.trackingCode = body.trackingCode
     const order = await prisma.order.update({
       where: { id: params.id },
-      data: body,
+      data,
       include: { items: true },
     })
     return NextResponse.json(order)
