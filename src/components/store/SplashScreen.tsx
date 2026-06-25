@@ -18,7 +18,20 @@ export function SplashScreen() {
     if (!show) return
     const v = videoRef.current
     if (!v) return
-    v.play().catch(() => setVideoBlocked(true))
+
+    const tryPlay = () => {
+      v.play().then(() => setVideoBlocked(false)).catch(() => setVideoBlocked(true))
+    }
+
+    v.load()
+    tryPlay()
+    v.addEventListener('loadeddata', tryPlay)
+    v.addEventListener('canplay', tryPlay)
+
+    return () => {
+      v.removeEventListener('loadeddata', tryPlay)
+      v.removeEventListener('canplay', tryPlay)
+    }
   }, [show])
 
   const dismiss = () => {
