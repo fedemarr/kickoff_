@@ -1,8 +1,8 @@
 import { Resend } from 'resend'
 
-// Lazy init — no instanciar en build time
 function getResend() {
-  return new Resend(process.env.RESEND_API_KEY)
+  const key = (process.env.RESEND_API_KEY || '').replace(/﻿/g, '').trim()
+  return new Resend(key)
 }
 
 const FROM = 'KickOff <onboarding@resend.dev>'

@@ -92,7 +92,7 @@ export async function POST(request: Request) {
       Promise.all([
         sendOrderConfirmationEmail(emailData),
         sendNewOrderNotification(emailData),
-      ]).catch(err => console.error('Email error:', err))
+      ]).catch(err => console.error('Email error:', err?.message ?? err?.statusCode ?? JSON.stringify(err)))
     }
 
     return NextResponse.json(order, { status: 201 })
