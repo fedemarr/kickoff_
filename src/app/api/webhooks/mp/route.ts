@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { MercadoPagoConfig, Payment } from 'mercadopago'
+import { sendOrderConfirmationEmail, sendNewOrderNotification } from '@/lib/email'
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN || '',
@@ -38,14 +39,38 @@ export async function POST(request: Request) {
       paymentStatus = 'REFUNDED'
     }
 
-    await prisma.order.update({
+    const order = await prisma.order.update({
       where: { id: orderId },
-      data: {
-        paymentStatus,
-        status: orderStatus,
-        mpPaymentId: String(paymentId),
-      },
+      data: { paymentStatus, status: orderStatus, mpPaymentId: String(paymentId) },
+      include: { items: true },
     })
+
+    // Emails solo cuando el pago es aprobado
+    if (mpStatus === 'approved') {
+      const emailData = {
+        orderNumber: order.orderNumber,
+        firstName: order.firstName,
+        lastName: order.lastName,
+        email: order.email,
+        phone: order.phone,
+        street: order.street ?? '',
+        city: order.city ?? '',
+        province: order.province ?? '',
+        total: order.total,
+        paymentMethod: 'MercadoPago',
+        items: order.items.map(i => ({
+          productName: i.productName,
+          size: i.size,
+          quantity: i.quantity,
+          unitPrice: i.unitPrice,
+        })),
+      }
+
+      await Promise.all([
+        sendOrderConfirmationEmail(emailData),
+        sendNewOrderNotification(emailData),
+      ])
+    }
 
     return NextResponse.json({ received: true })
   } catch (error) {
