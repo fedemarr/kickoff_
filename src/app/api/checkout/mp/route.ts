@@ -35,8 +35,8 @@ export async function POST(request: Request) {
         lastName: order.lastName,
         email: order.email,
         phone: order.phone,
-        street: order.street,
-        zipCode: order.zipCode,
+        street: order.street ?? '',
+        zipCode: order.zipCode ?? '',
       },
       installments: config?.installments ?? 3,
     })
@@ -48,11 +48,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       preferenceId: preference.id,
-      initPoint: preference.init_point,
-      sandboxInitPoint: preference.sandbox_init_point,
+      checkoutUrl: preference.checkoutUrl,
     })
-  } catch (error) {
-    console.error('MP preference error:', error)
+  } catch (error: any) {
+    console.error('MP preference error:', JSON.stringify(error?.cause ?? error?.message ?? error))
     return NextResponse.json({ error: 'Error creating MP preference' }, { status: 500 })
   }
 }

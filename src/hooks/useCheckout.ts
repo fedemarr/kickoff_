@@ -55,10 +55,13 @@ export function useCheckout() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ orderId: order.id }),
         })
-        if (!mpRes.ok) throw new Error('Error creando preferencia MP')
-        const { initPoint } = await mpRes.json()
+        if (!mpRes.ok) {
+          const errData = await mpRes.json().catch(() => ({}))
+          throw new Error(errData.error || 'Error creando preferencia MP')
+        }
+        const { checkoutUrl } = await mpRes.json()
         clearCart()
-        window.location.href = initPoint
+        window.location.href = checkoutUrl
       } else {
         clearCart()
         return { orderId: order.id, orderNumber: order.orderNumber }

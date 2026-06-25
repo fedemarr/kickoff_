@@ -2,10 +2,11 @@ import { MercadoPagoConfig, Preference } from 'mercadopago'
 import type { CartItem } from '@/types'
 
 function getMPClient() {
-  return new MercadoPagoConfig({
-    accessToken: (process.env.MP_ACCESS_TOKEN || '').replace(/^﻿/, ''),
-  })
+  const token = (process.env.MP_ACCESS_TOKEN || '').replace(/^﻿/, '').trim()
+  return new MercadoPagoConfig({ accessToken: token })
 }
+
+const isSandbox = process.env.NEXT_PUBLIC_MP_SANDBOX === 'true'
 
 interface CreatePreferenceParams {
   orderId: string
@@ -46,8 +47,8 @@ export async function createPreference({
         email: payer.email,
         phone: { number: payer.phone },
         address: {
-          street_name: payer.street,
-          zip_code: payer.zipCode,
+          street_name: payer.street || '',
+          zip_code: payer.zipCode || '',
         },
       },
       back_urls: {
@@ -65,5 +66,10 @@ export async function createPreference({
     },
   })
 
-  return result
+  return {
+    id: result.id,
+    checkoutUrl: isSandbox
+      ? (result.sandbox_init_point ?? result.init_point ?? '')
+      : (result.init_point ?? ''),
+  }
 }
