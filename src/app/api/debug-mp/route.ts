@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 
-const APP_URL = 'https://kickoff-ten.vercel.app'
+const APP_URL = 'https://kickofftienda.com'
 
 export async function GET() {
   const rawToken = process.env.MP_ACCESS_TOKEN || ''

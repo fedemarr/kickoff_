@@ -1,7 +1,7 @@
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 import type { CartItem } from '@/types'
 
-const PRODUCTION_URL = 'https://kickoff-ten.vercel.app'
+const PRODUCTION_URL = 'https://kickofftienda.com'
 
 function getMPClient() {
   const token = (process.env.MP_ACCESS_TOKEN || '').replace(/﻿/g, '').trim()
