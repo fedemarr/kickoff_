@@ -1,12 +1,12 @@
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { headers } from 'next/headers'
 import { AdminSidebar } from '@/components/admin/AdminSidebar'
 import { AdminProviders } from '@/components/admin/AdminProviders'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession(authOptions)
+  const headersList = headers()
+  const isAuthenticated = headersList.get('x-admin-auth') === '1'
 
-  if (!session) {
+  if (!isAuthenticated) {
     return <AdminProviders>{children}</AdminProviders>
   }
 

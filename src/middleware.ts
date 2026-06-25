@@ -11,7 +11,10 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/admin/login', req.url))
   }
 
-  return NextResponse.next()
+  // Pass auth state to layout via header
+  const res = NextResponse.next()
+  if (token) res.headers.set('x-admin-auth', '1')
+  return res
 }
 
 export const config = {

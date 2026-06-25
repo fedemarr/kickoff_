@@ -1,7 +1,7 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { Plus, X } from 'lucide-react'
+import { Plus, X, Upload } from 'lucide-react'
 import { slugify } from '@/lib/utils'
 
 const CATEGORIES = [
@@ -49,6 +49,8 @@ export function ProductFormClient({ initialData, productId }: ProductFormClientP
     initialData?.variants || [{ size: 'S', price: 0, stock: 0 }]
   )
   const [imageUrl, setImageUrl] = useState('')
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   function set(key: string, val: any) {
     setForm((prev) => ({
@@ -74,6 +76,28 @@ export function ProductFormClient({ initialData, productId }: ProductFormClientP
     if (!imageUrl.trim()) return
     setForm((prev) => ({ ...prev, images: [...prev.images, imageUrl.trim()] }))
     setImageUrl('')
+  }
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || [])
+    if (!files.length) return
+    setUploading(true)
+    try {
+      for (const file of files) {
+        const fd = new FormData()
+        fd.append('file', file)
+        fd.append('folder', 'kickoff/products')
+        const res = await fetch('/api/upload', { method: 'POST', body: fd })
+        if (!res.ok) throw new Error('Error subiendo imagen')
+        const data = await res.json()
+        setForm((prev) => ({ ...prev, images: [...prev.images, data.url] }))
+      }
+    } catch {
+      alert('Error al subir una o más imágenes')
+    } finally {
+      setUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
   }
 
   async function save() {
@@ -140,18 +164,43 @@ export function ProductFormClient({ initialData, productId }: ProductFormClientP
       {/* Images */}
       <section className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 space-y-3">
         <h2 className="font-bold uppercase text-xs tracking-widest text-gray-400">Imágenes</h2>
+
+        {/* URL input */}
         <div className="flex gap-2">
           <input
             type="url"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
-            placeholder="URL de imagen (Cloudinary, etc.)"
+            onKeyDown={(e) => e.key === 'Enter' && addImage()}
+            placeholder="Pegar URL de imagen"
             className="input-field flex-1"
           />
           <button onClick={addImage} className="btn-primary text-sm py-2 px-4 shrink-0">
-            Agregar
+            Agregar URL
           </button>
         </div>
+
+        {/* File upload */}
+        <div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={handleFileUpload}
+          />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="flex items-center gap-2 border border-dashed border-gray-300 hover:border-primary text-gray-600 hover:text-primary rounded-lg px-4 py-3 text-sm font-medium transition-colors w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Upload size={16} />
+            {uploading ? 'Subiendo...' : 'Subir desde computadora'}
+          </button>
+          <p className="text-xs text-gray-400 mt-1 text-center">Podés seleccionar varias imágenes a la vez</p>
+        </div>
+
         {form.images.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-2">
             {form.images.map((img, i) => (
