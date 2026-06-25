@@ -1,9 +1,17 @@
 import { MercadoPagoConfig, Preference } from 'mercadopago'
 import type { CartItem } from '@/types'
 
+const PRODUCTION_URL = 'https://kickoff-ten.vercel.app'
+
 function getMPClient() {
-  const token = (process.env.MP_ACCESS_TOKEN || '').replace(/^﻿/, '').trim()
+  const token = (process.env.MP_ACCESS_TOKEN || '').replace(/﻿/g, '').trim()
   return new MercadoPagoConfig({ accessToken: token })
+}
+
+function getAppUrl() {
+  const env = process.env.NEXT_PUBLIC_APP_URL || ''
+  if (env && env.startsWith('https://') && !env.includes('localhost')) return env
+  return PRODUCTION_URL
 }
 
 const isSandbox = process.env.NEXT_PUBLIC_MP_SANDBOX === 'true'
@@ -30,6 +38,7 @@ export async function createPreference({
   payer,
   installments,
 }: CreatePreferenceParams) {
+  const appUrl = getAppUrl()
   const preference = new Preference(getMPClient())
 
   const result = await preference.create({
@@ -52,13 +61,13 @@ export async function createPreference({
         },
       },
       back_urls: {
-        success: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/success?order=${orderNumber}`,
-        failure: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/failure?order=${orderNumber}`,
-        pending: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/success?order=${orderNumber}`,
+        success: `${appUrl}/checkout/success?order=${orderNumber}`,
+        failure: `${appUrl}/checkout/failure?order=${orderNumber}`,
+        pending: `${appUrl}/checkout/success?order=${orderNumber}`,
       },
       auto_return: 'approved',
       external_reference: orderId,
-      notification_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/mp`,
+      notification_url: `${appUrl}/api/webhooks/mp`,
       payment_methods: {
         installments,
       },
