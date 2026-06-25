@@ -5,7 +5,7 @@ function getResend() {
   return new Resend(key)
 }
 
-const FROM = 'KickOff <onboarding@resend.dev>'
+const FROM = 'KickOff <noreply@kickofftienda.com>'
 const OWNER_EMAIL = 'tiendakickoff@gmail.com'
 const WA_NUMBER = '5491156192976'
 
