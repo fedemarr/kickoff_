@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ShoppingCart, Search, Menu, X, ChevronDown } from 'lucide-react'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/stores/cartStore'
 import { getVentanaEncargo } from '@/lib/encargos'
@@ -16,6 +16,8 @@ export function Navbar() {
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const ventana = getVentanaEncargo()
   const count = itemCount()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   const compraLinks = [
     { href: '/selecciones', label: 'Selecciones' },
@@ -121,7 +123,7 @@ export function Navbar() {
           {/* Cart */}
           <button onClick={toggleCart} className="relative text-white hover:text-primary transition-colors ml-2 shrink-0" aria-label="Carrito">
             <ShoppingCart size={22} />
-            {count > 0 && (
+            {mounted && count > 0 && (
               <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                 {count > 9 ? '9+' : count}
               </span>
