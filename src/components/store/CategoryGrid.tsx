@@ -14,11 +14,13 @@ export function CategoryGrid() {
     <section className="max-w-7xl mx-auto px-4 py-10">
       <h2 className="section-title mb-6">CATEGORÍAS</h2>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        {categories.map(({ label, href, img }) => (
+        {categories.map(({ label, href, img }, index) => (
           <Link
             key={href}
             href={href}
-            className="relative rounded-lg overflow-hidden aspect-square flex items-end group"
+            className={`relative rounded-lg overflow-hidden flex items-end group
+              ${index === 4 ? 'col-span-2 aspect-[2/1] md:col-span-1 md:aspect-square' : 'aspect-square'}
+            `}
           >
             <Image
               src={img}

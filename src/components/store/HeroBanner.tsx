@@ -18,7 +18,7 @@ const slides = [
     id: 2,
     img: '/banner2.png',
     title: 'Selecciones\ny equipos europeos',
-    subtitle: 'Los Pumas · All Blacks · Springboks · Francia · Stade Toulousain y más',
+    subtitle: 'Los Pumas · All Blacks · Springboks · Francia y más',
     cta: 'Ver selecciones',
     href: '/selecciones',
   },
@@ -47,7 +47,7 @@ export function HeroBanner() {
 
   return (
     <div
-      className="relative h-[320px] md:h-[500px] overflow-hidden select-none"
+      className="relative h-[460px] sm:h-[420px] md:h-[500px] overflow-hidden select-none"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -66,16 +66,16 @@ export function HeroBanner() {
                 src={slide.img}
                 alt={slide.title}
                 fill
-                className="object-cover"
+                className="object-cover object-top"
                 priority={i === 0}
                 sizes="100vw"
               />
-              <div className="absolute inset-0 bg-black/45" />
+              <div className="absolute inset-0 bg-black/50" />
 
-              <div className="relative z-10 h-full flex items-center justify-center text-center text-white px-4">
+              <div className="relative z-10 h-full flex items-center justify-center text-center text-white px-6">
                 <div className="max-w-2xl">
                   <motion.h1
-                    className="text-4xl md:text-6xl font-black uppercase italic leading-tight whitespace-pre-line drop-shadow-lg"
+                    className="text-3xl sm:text-4xl md:text-6xl font-black uppercase italic leading-tight whitespace-pre-line drop-shadow-lg"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.2 }}
@@ -83,7 +83,7 @@ export function HeroBanner() {
                     {slide.title}
                   </motion.h1>
                   <motion.p
-                    className="mt-4 text-lg md:text-xl text-gray-200 drop-shadow"
+                    className="mt-3 text-sm sm:text-base md:text-xl text-gray-200 drop-shadow px-2"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.35 }}
@@ -96,7 +96,7 @@ export function HeroBanner() {
                     transition={{ delay: 0.5 }}
                     className="mt-6"
                   >
-                    <Link href={slide.href} className="btn-primary inline-block text-base px-8 py-3">
+                    <Link href={slide.href} className="btn-primary inline-block text-sm sm:text-base px-8 py-3">
                       {slide.cta}
                     </Link>
                   </motion.div>
@@ -107,11 +107,11 @@ export function HeroBanner() {
         )}
       </AnimatePresence>
 
-      {/* Arrows */}
-      <button onClick={prev} className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-20">
+      {/* Arrows — hidden on mobile */}
+      <button onClick={prev} className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-20">
         <ChevronLeft size={20} />
       </button>
-      <button onClick={next} className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-20">
+      <button onClick={next} className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-20">
         <ChevronRight size={20} />
       </button>
 
