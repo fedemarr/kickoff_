@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { formatPrice } from '@/lib/utils'
-import { ArrowLeft, CheckCircle, Package, Truck, MapPin, MessageCircle } from 'lucide-react'
+import { ArrowLeft, CheckCircle, Package, Truck, MapPin, MessageCircle, Mail } from 'lucide-react'
 
 const STATUS_FLOW = [
   { value: 'PENDING',   label: 'Pendiente',   color: 'bg-yellow-100 text-yellow-700' },
@@ -44,6 +44,8 @@ export default function OrderDetailPage() {
   const [trackingCode, setTrackingCode] = useState('')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [sendingEmail, setSendingEmail] = useState(false)
+  const [emailSent, setEmailSent] = useState(false)
 
   useEffect(() => {
     fetch(`/api/ordenes/${params.id}`)
@@ -82,6 +84,14 @@ export default function OrderDetailPage() {
   async function quickAction(newStatus: string) {
     setStatus(newStatus)
     await save({ status: newStatus })
+  }
+
+  async function sendTrackingEmail() {
+    setSendingEmail(true)
+    await fetch(`/api/ordenes/${params.id}/notify-shipping`, { method: 'POST' })
+    setSendingEmail(false)
+    setEmailSent(true)
+    setTimeout(() => setEmailSent(false), 3000)
   }
 
   async function confirmPayment() {
@@ -223,11 +233,19 @@ export default function OrderDetailPage() {
             <Truck size={14} /> Seguir envío en {shippingCompany} →
           </a>
         )}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <button onClick={() => save()} disabled={saving} className="btn-primary text-sm py-2 px-6">
             {saving ? 'Guardando...' : 'Guardar cambios'}
           </button>
+          {trackingCode && (
+            <button onClick={sendTrackingEmail} disabled={sendingEmail}
+              className="flex items-center gap-2 bg-indigo-600 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50">
+              <Mail size={14} />
+              {sendingEmail ? 'Enviando...' : 'Enviar tracking al comprador'}
+            </button>
+          )}
           {saved && <span className="text-green-600 text-sm font-medium">✓ Guardado</span>}
+          {emailSent && <span className="text-indigo-600 text-sm font-medium">✓ Email enviado</span>}
         </div>
       </div>
     </div>

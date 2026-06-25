@@ -206,3 +206,68 @@ export async function sendNewOrderNotification(order: OrderEmailData) {
     `,
   })
 }
+
+// ── Email de seguimiento al comprador ────────────────────────────────────────
+export async function sendShippingEmail({
+  orderNumber, firstName, email, phone,
+  shippingCompany, trackingCode, trackingUrl,
+}: {
+  orderNumber: string
+  firstName: string
+  email: string
+  phone: string
+  shippingCompany: string
+  trackingCode: string
+  trackingUrl: string | null
+}) {
+  const waMsg = `Hola! Quiero consultar sobre el envío de mi pedido #${orderNumber} en KickOff.`
+  const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMsg)}`
+
+  await getResend().emails.send({
+    from: FROM,
+    to: email,
+    subject: `Tu pedido #${orderNumber} está en camino — KickOff`,
+    html: `
+      <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#111">
+        <div style="background:#111;padding:24px;text-align:center">
+          <h1 style="color:#fff;margin:0;font-size:28px">KICK<span style="color:#1e9916">OFF</span></h1>
+          <p style="color:#aaa;margin:4px 0 0;font-size:13px">Camisetas de Rugby</p>
+        </div>
+
+        <div style="padding:32px 24px">
+          <h2 style="margin:0 0 8px">¡Tu pedido está en camino, ${firstName}!</h2>
+          <p style="color:#555;margin:0 0 24px">Tu pedido <strong>#${orderNumber}</strong> fue despachado y está en camino a tu domicilio.</p>
+
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:20px;margin-bottom:24px">
+            <p style="margin:0 0 8px;font-size:13px;color:#166534;font-weight:bold;text-transform:uppercase">Datos del envío</p>
+            <p style="margin:0 0 6px;font-size:15px"><strong>Empresa:</strong> ${shippingCompany}</p>
+            <p style="margin:0;font-size:15px"><strong>Código de seguimiento:</strong>
+              <span style="font-family:monospace;background:#e8f5e9;padding:2px 8px;border-radius:4px;font-size:16px;font-weight:bold">${trackingCode}</span>
+            </p>
+          </div>
+
+          ${trackingUrl ? `
+          <div style="text-align:center;margin-bottom:24px">
+            <a href="${trackingUrl}" style="background:#1e9916;color:#fff;padding:14px 32px;border-radius:999px;font-weight:bold;text-decoration:none;font-size:14px;display:inline-block">
+              Seguir mi envío en ${shippingCompany} →
+            </a>
+          </div>` : ''}
+
+          <div style="background:#f9f9f9;border-radius:8px;padding:16px;margin-bottom:24px;font-size:13px;color:#555">
+            <p style="margin:0">El tiempo de entrega depende de la zona. Si tenés alguna consulta sobre tu envío podés contactarnos por WhatsApp.</p>
+          </div>
+
+          <div style="text-align:center">
+            <a href="${waLink}" style="background:#25D366;color:#fff;padding:12px 28px;border-radius:999px;font-weight:bold;text-decoration:none;font-size:14px;display:inline-block">
+              Consultar por WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div style="background:#f5f5f5;padding:16px;text-align:center;font-size:12px;color:#999">
+          © ${new Date().getFullYear()} KickOff · Powered by FMCode
+        </div>
+      </div>
+    `,
+  })
+}
