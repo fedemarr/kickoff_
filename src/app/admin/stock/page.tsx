@@ -7,11 +7,13 @@ export default function AdminStockPage() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
 
-  useEffect(() => {
+  function loadProducts() {
     fetch('/api/productos')
       .then((r) => r.json())
       .then(setProducts)
-  }, [])
+  }
+
+  useEffect(() => { loadProducts() }, [])
 
   function setStock(variantId: string, val: number) {
     setChanges((prev) => ({ ...prev, [variantId]: val }))
@@ -27,9 +29,10 @@ export default function AdminStockPage() {
         body: JSON.stringify({ stock }),
       })
     }
+    setChanges({})
+    await loadProducts()
     setSaving(false)
     setSaved(true)
-    setChanges({})
     setTimeout(() => setSaved(false), 2000)
   }
 
