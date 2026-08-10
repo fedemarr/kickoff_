@@ -16,7 +16,9 @@ export function PriceBlock({ variant, transferDiscount = 10, installments = 3, s
   return (
     <div>
       <div className="flex items-baseline gap-3 mb-1">
-        <span className="text-3xl font-bold text-gray-900">{formatPrice(variant.price)}</span>
+        <span className="text-3xl font-bold text-gray-900">
+          {installments} cuotas de {formatPrice(cuota)}
+        </span>
         {variant.oldPrice && (
           <span className="text-lg text-gray-400 line-through">{formatPrice(variant.oldPrice)}</span>
         )}
@@ -35,11 +37,9 @@ export function PriceBlock({ variant, transferDiscount = 10, installments = 3, s
             <span className="font-bold text-gray-800">{formatPrice(transferPrice)}</span>
           </span>
         </div>
-        <div className="flex items-center gap-2 text-sm">
-          <CreditCard size={15} className="text-green-cuotas shrink-0" />
-          <span className="text-green-cuotas font-medium">
-            {installments} cuotas sin interés de {formatPrice(cuota)}
-          </span>
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <CreditCard size={15} className="text-gray-400 shrink-0" />
+          Precio de lista: {formatPrice(variant.price)}
         </div>
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <RefreshCw size={15} className="text-gray-400 shrink-0" />

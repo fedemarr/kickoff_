@@ -65,14 +65,13 @@ export function ProductCard({ product, showEncargar = false, onEncargar }: Produ
         {firstVariant && (
           <div className="mt-2">
             <div className="flex items-baseline gap-2">
-              <span className="font-bold text-gray-900">{formatPrice(firstVariant.price)}</span>
+              <span className="font-bold text-gray-900">
+                3 cuotas de {formatPrice(Math.round(firstVariant.price / 3))}
+              </span>
               {hasDiscount && (
                 <span className="text-xs text-gray-400 line-through">{formatPrice(firstVariant.oldPrice!)}</span>
               )}
             </div>
-            <p className="text-xs text-green-cuotas mt-0.5">
-              3 cuotas de {formatPrice(Math.round(firstVariant.price / 3))}
-            </p>
             <p className="text-xs text-green-600 font-semibold mt-0.5">
               {formatPrice(discountedPrice(firstVariant.price, 23))} por transferencia
             </p>
