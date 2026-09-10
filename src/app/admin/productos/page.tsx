@@ -4,6 +4,8 @@ import Image from 'next/image'
 import { Plus } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 const TAG_LABELS: Record<string, string> = { NONE: '', NEW: 'Nuevo', SALE: 'Sale', FEATURED: 'Destacado' }
 const CAT_LABELS: Record<string, string> = { SELECCIONES: 'Selecciones', CLUBES: 'Clubes', EQUIPAMIENTO: 'Equipamiento' }
 

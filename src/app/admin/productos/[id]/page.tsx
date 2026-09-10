@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { ProductFormClient } from '@/components/admin/ProductFormClient'
 
+export const dynamic = 'force-dynamic'
+
 interface PageProps { params: { id: string } }
 
 export default async function EditProductPage({ params }: PageProps) {

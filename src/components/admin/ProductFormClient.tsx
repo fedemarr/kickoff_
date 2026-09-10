@@ -24,6 +24,17 @@ interface Variant {
   sku?: string
 }
 
+// Prices are whole pesos. Accept Argentine-style input like "87.743" or
+// "$ 87.743" and keep only the digits -> 87743.
+function parsePrice(raw: string): number {
+  const digits = String(raw ?? '').replace(/\D/g, '')
+  return digits ? parseInt(digits, 10) : 0
+}
+
+function formatArs(n?: number): string {
+  return n && n > 0 ? n.toLocaleString('es-AR') : ''
+}
+
 interface ProductFormClientProps {
   initialData?: any
   productId?: string
@@ -101,17 +112,34 @@ export function ProductFormClient({ initialData, productId }: ProductFormClientP
   }
 
   async function save() {
+    if (!form.name.trim()) {
+      alert('El nombre es obligatorio')
+      return
+    }
     setSaving(true)
     const url = productId ? `/api/productos/${productId}` : '/api/productos'
     const method = productId ? 'PUT' : 'POST'
 
-    await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, variants }),
-    })
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, variants }),
+      })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        alert(err.error || 'No se pudo guardar el producto')
+        setSaving(false)
+        return
+      }
+    } catch {
+      alert('Error de conexión al guardar')
+      setSaving(false)
+      return
+    }
 
     router.push('/admin/productos')
+    router.refresh()
   }
 
   const field = (key: string, label: string, type: 'text' | 'textarea' = 'text') => (
@@ -254,13 +282,36 @@ export function ProductFormClient({ initialData, productId }: ProductFormClientP
                     <input value={v.size} onChange={(e) => updateVariant(i, 'size', e.target.value)} placeholder="M" className="input-field w-20" />
                   </td>
                   <td className="py-2 pr-3">
-                    <input type="number" value={v.price} onChange={(e) => updateVariant(i, 'price', Number(e.target.value))} className="input-field w-28" />
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={formatArs(v.price)}
+                      onChange={(e) => updateVariant(i, 'price', parsePrice(e.target.value))}
+                      placeholder="0"
+                      className="input-field w-28"
+                    />
                   </td>
                   <td className="py-2 pr-3">
-                    <input type="number" value={v.oldPrice || ''} onChange={(e) => updateVariant(i, 'oldPrice', e.target.value ? Number(e.target.value) : undefined)} className="input-field w-28" />
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={formatArs(v.oldPrice)}
+                      onChange={(e) => {
+                        const n = parsePrice(e.target.value)
+                        updateVariant(i, 'oldPrice', n > 0 ? n : undefined)
+                      }}
+                      placeholder="—"
+                      className="input-field w-28"
+                    />
                   </td>
                   <td className="py-2 pr-3">
-                    <input type="number" value={v.stock} onChange={(e) => updateVariant(i, 'stock', Number(e.target.value))} className="input-field w-20" />
+                    <input
+                      type="number"
+                      min="0"
+                      value={Number.isFinite(v.stock) ? v.stock : 0}
+                      onChange={(e) => updateVariant(i, 'stock', Math.max(0, Math.trunc(Number(e.target.value)) || 0))}
+                      className="input-field w-20"
+                    />
                   </td>
                   <td className="py-2 pr-3">
                     <input value={v.sku || ''} onChange={(e) => updateVariant(i, 'sku', e.target.value)} className="input-field w-28" placeholder="Opcional" />
