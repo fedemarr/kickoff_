@@ -24,8 +24,8 @@ interface Variant {
   sku?: string
 }
 
-// Prices are whole pesos. Accept Argentine-style input like "87.743" or
-// "$ 87.743" and keep only the digits -> 87743.
+// Prices are whole pesos. Keep only the digits the user types, so "88473"
+// or "88.473" or "$ 88.473" all become the integer 88473. No rounding.
 function parsePrice(raw: string): number {
   const digits = String(raw ?? '').replace(/\D/g, '')
   return digits ? parseInt(digits, 10) : 0
@@ -285,17 +285,18 @@ export function ProductFormClient({ initialData, productId }: ProductFormClientP
                     <input
                       type="text"
                       inputMode="numeric"
-                      value={formatArs(v.price)}
+                      value={v.price ? String(v.price) : ''}
                       onChange={(e) => updateVariant(i, 'price', parsePrice(e.target.value))}
                       placeholder="0"
                       className="input-field w-28"
                     />
+                    {v.price > 0 && <p className="text-[11px] text-gray-400 mt-0.5">$ {formatArs(v.price)}</p>}
                   </td>
                   <td className="py-2 pr-3">
                     <input
                       type="text"
                       inputMode="numeric"
-                      value={formatArs(v.oldPrice)}
+                      value={v.oldPrice ? String(v.oldPrice) : ''}
                       onChange={(e) => {
                         const n = parsePrice(e.target.value)
                         updateVariant(i, 'oldPrice', n > 0 ? n : undefined)
@@ -303,6 +304,9 @@ export function ProductFormClient({ initialData, productId }: ProductFormClientP
                       placeholder="—"
                       className="input-field w-28"
                     />
+                    {v.oldPrice && v.oldPrice > 0 && (
+                      <p className="text-[11px] text-gray-400 mt-0.5">$ {formatArs(v.oldPrice)}</p>
+                    )}
                   </td>
                   <td className="py-2 pr-3">
                     <input
